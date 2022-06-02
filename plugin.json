@@ -1,9 +1,9 @@
 {
-  "pluginName": "Notion search",
+  "pluginName": "Notion搜索新版",
   "version": "1.0.0",
-  "description": "Notion 搜索",
-  "author": "Joys",
-  "homepage": "https://github.com/JoysKang/notion-search",
+  "description": "Notion搜索",
+  "author": "Blanke",
+  "homepage": "https://github.com/Blankeer/notion-search",
   "preload": "src/preload.js",
   "platform": ["win32", "darwin"],
   "logo": "logo.png",

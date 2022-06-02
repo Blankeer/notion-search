@@ -1,6 +1,6 @@
-const {configs} = require("./config");
+const { configs } = require("./config");
 const fetch = require('node-fetch');
-const {exec} = require("child_process");
+const { exec } = require("child_process");
 const emojiUnicode = require("emoji-unicode")
 const { Client } = require("@notionhq/client")
 
@@ -9,7 +9,7 @@ let deepCopyConfigs = JSON.parse(JSON.stringify(configs))
 
 
 function isEmojiCharacter(substring) {
-    for ( let i = 0; i < substring.length; i++) {
+    for (let i = 0; i < substring.length; i++) {
         let hs = substring.charCodeAt(i);
         if (0xd800 <= hs && hs <= 0xdbff) {
             if (substring.length > 1) {
@@ -120,13 +120,18 @@ async function search(searchWord) {
             console.log('error', error);
             utools.showNotification("搜索失败" + error);
         });
-
-    if (jsonData.trackEventProperties.searchExperiments['search-no-wildcard-for-non-cjk'] !== 'on') {
-        utools.showNotification("cookie 已过期，请重新获取");
-        return [];
-    }
+    // console.log('jsonData',jsonData)
+    // utools.copyText(JSON.stringify(jsonData))
+    // if (jsonData.trackEventProperties.searchExperiments['search-no-wildcard-for-non-cjk'] !== 'on') {
+    //     utools.showNotification("cookie 已过期，请重新获取");
+    //     return [];
+    // }
     // console.timeEnd('test2')
     const results = jsonData.results
+    if (results.length === 0) {
+        utools.showNotification("搜索结果为空,或cookie 已过期,请手动检查");
+        return [];
+    }
     const recordMap = jsonData.recordMap
     const useDesktopClient = utools.dbStorage.getItem("useDesktopClient")
     let link = useDesktopClient === "true" ? "notion://www.notion.so/" : "https://www.notion.so/"
@@ -171,7 +176,7 @@ async function search(searchWord) {
         searchResult.push({
             title: '未查找到匹配项',
             description: '请更换关键词后再查找',
-            icon:'emojiicons/1f62f.png',
+            icon: 'emojiicons/1f62f.png',
             id: '',
             link: ''
         })
@@ -232,7 +237,7 @@ async function searchByToken(searchWord) {
         searchResult.push({
             title: '未查找到匹配项',
             description: '请更换关键词后再查找',
-            icon:'emojiicons/1f62f.png',
+            icon: 'emojiicons/1f62f.png',
             id: '',
             link: ''
         })
@@ -366,7 +371,7 @@ let NS = {
             }
 
             if (command) {
-                exec(command, function (err, stdout , stderr) {
+                exec(command, function (err, stdout, stderr) {
                     if (err) utools.showNotification(err);
                     utools.outPlugin();     // 关闭插件
                 });
